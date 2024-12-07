@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  haproxy:
+    image: haproxy:latest
+    ports:
+      - "3000:80"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+      - master-app
+      - slave-app
+
+  master-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python /code/main.py --master
+    env_file:
+      - .env
+    environment:
+      - APP_ID=master-app
+    
+  slave-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python /code/main.py
+    env_file:
+      - .env
+    environment:
+      - APP_ID=slave-app
+    
+networks:
+  default:
+    driver: bridge

@@ -1,0 +1,6 @@
+flask[async]~=2.3.2
+uvicorn~=0.23.2
+asgiref~=3.7.2
+python-telegram-bot==21.8
+
+python-dotenv==1.0.1
